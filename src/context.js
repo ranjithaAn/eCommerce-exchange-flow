@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { storeProducts, detailProduct } from "./data";
+import { storeProducts, detailProduct, topBrands } from "./data";
 const ProductContext = React.createContext();
 
 class ProductProvider extends Component {
@@ -8,13 +8,19 @@ class ProductProvider extends Component {
         detailProduct: detailProduct,
         cart: [],
         modalOpen: false,
+        exchangeModalOpen: false,
         modalProduct: detailProduct,
         cartSubTotal: 0,
         cartTax: 0,
-        cartTotal: 0
+        cartTotal: 0,
+        brands: [],
+        selectedOption: "",
+        nextModalOpen: false,
+        selectedBrand: ""
     };
     componentDidMount() {
         this.setProducts();
+        this.setBrands();
     }
 
     setProducts = () => {
@@ -28,6 +34,16 @@ class ProductProvider extends Component {
         }, this.checkCartItems);
     };
 
+    setBrands = () => {
+        let brands = [];
+        topBrands.forEach(item => {
+            const singleItem = {...item};
+            brands = [...brands, singleItem];
+        });
+        this.setState(() => {
+            return { brands };
+        });
+    };
     getItem = id => {
         const product = this.state.products.find(item => item.id === id);
         return product;
@@ -61,9 +77,20 @@ class ProductProvider extends Component {
             return { modalProduct: product, modalOpen: true };
         });
     };
+    exchangeOpenModal = id => {
+        const product = this.getItem(id);
+        this.setState(() => {
+            return { modalProduct: product, exchangeModalOpen: true };
+        });
+    }
     closeModal = () => {
         this.setState(() => {
             return { modalOpen: false };
+        });
+    };
+    exchangeCloseModal = () => {
+        this.setState(() => {
+            return { exchangeModalOpen: false };
         });
     };
     increment = id => {
@@ -171,7 +198,9 @@ class ProductProvider extends Component {
                     handleDetail: this.handleDetail,
                     addToCart: this.addToCart,
                     openModal: this.openModal,
+                    exchangeOpenModal: this.exchangeOpenModal,
                     closeModal: this.closeModal,
+                    exchangeCloseModal: this.exchangeCloseModal,
                     increment: this.increment,
                     decrement: this.decrement,
                     removeItem: this.removeItem,
@@ -186,4 +215,4 @@ class ProductProvider extends Component {
 
 const ProductConsumer = ProductContext.Consumer;
 
-export { ProductProvider, ProductConsumer };
+export { ProductProvider, ProductConsumer };  
