@@ -121,10 +121,71 @@ export const topBrands = [ {
 },
   {
     id: 2,
-    title: "SamSung"
+    title: "Samsung"
   },
   {
     id: 3,
     title: "Google"
   }
 ]
+export const models = [ {
+  id: 1,
+  brandName: "Apple",
+  models: [{
+    id: 1,
+    title: "iPhone 10",
+    exchangeValue: 9
+  },
+    {
+    id: 2,
+    title: "iPhone 12",
+    exchangeValue: 5
+    }
+    ]
+},
+  {
+    id: 2,
+    brandName: "Samsung",
+    models: [{
+      id: 1,
+      title: "Samsung s2",
+      exchangeValue: 7
+    },
+      {
+        id: 2,
+        title: "Samsung s3",
+        exchangeValue: 5
+      }
+    ]
+  },
+  {
+    id: 3,
+    brandName: "Google",
+    models: [{
+      id: 1,
+      title: "pixel 2",
+      exchangeValue: 6
+    },
+      {
+        id: 2,
+        title: "pixel 3",
+        exchangeValue: 5
+      }
+    ]
+  }]
+
+export const defaultModel ={
+  id: 1,
+  brandName: "Apple",
+  models: [{
+    id: 1,
+    title: "iPhone 10",
+    exchangeValue: 9
+  },
+    {
+      id: 2,
+      title: "iPhone 12",
+      exchangeValue: 5
+    }
+  ]
+}

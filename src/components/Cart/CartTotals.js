@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 export default function CartTotals({value}) {
-    const {cartSubTotal, cartTax, cartTotal,clearCart} = value;
+    const {cartSubTotal, cartTax, cartTotal,clearCart, selectedExchangeValue, exchange} = value;
     return <React.Fragment>
        <div className="container">
            <div className="row">
@@ -22,17 +22,20 @@ export default function CartTotals({value}) {
                         <strong>{cartSubTotal}</strong>
                     </h5>
                     <h5>
-                        <span className="text-title">subtotal :</span>
+                        <span className="text-title">tax :</span>
                         <strong>{cartTax}</strong>
                     </h5>
+                   {exchange && <h5>
+                       <span className="text-title"> Exchange Value : - </span>
+                       <strong>{selectedExchangeValue}</strong>
+                   </h5>}
                     <h5>
-                        <span className="text-title">subtotal :</span>
-                        <strong>{cartTotal}</strong>
+                        <span className="text-title">Total :</span>
+                        <strong>{exchange ? cartTotal - selectedExchangeValue :cartTotal}</strong>
                     </h5>
                </div>
            </div>
        </div>
-
        </React.Fragment>;
     
 }

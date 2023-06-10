@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { storeProducts, detailProduct, topBrands } from "./data";
+import { storeProducts, detailProduct, topBrands, models,defaultModel } from "./data";
 const ProductContext = React.createContext();
 
 class ProductProvider extends Component {
@@ -9,20 +9,49 @@ class ProductProvider extends Component {
         cart: [],
         modalOpen: false,
         exchangeModalOpen: false,
+        exchangeSummaryModalOpen: false,
         modalProduct: detailProduct,
         cartSubTotal: 0,
         cartTax: 0,
         cartTotal: 0,
         brands: [],
-        selectedOption: "",
-        nextModalOpen: false,
-        selectedBrand: ""
+        selectOptions : [],
+        id: "",
+        name: '',
+        modelList: [],
+        models: [],
+        modelsByBrand: defaultModel,
+        selectedExchangeModel: "",
+        selectedExchangeValue: "",
+        allModels: [],
+        exchange: false
     };
     componentDidMount() {
         this.setProducts();
         this.setBrands();
+        this.setModels();
     }
-
+    setSelectedExchangeBrand = id => {
+        this.setState(() => {
+           return {selectedExchangeBrand: id, modelsByBrand: this.getModelsByBrand(id) }
+        })
+    }
+    setSelectedExchangeModel = id => {
+        const brandModel = this.getModels().find(item => item.title === id) ;
+        this.setState(() => {
+            return {selectedExchangeModel: id, selectedExchangeValue: brandModel.exchangeValue }
+        })
+    }
+/*    setSelectedExchangeValue = id => {
+        const brandModel = this.state.models.find(item => item.id === parseInt(id,10)) ;
+        this.setState(() => {
+            return {selectedExchangeValue: brandModel.exchangeValue }
+        })
+    }*/
+    setExchange = () => {
+        this.setState({exchange: true});
+    }
+    
     setProducts = () => {
         let products = [];
         storeProducts.forEach(item => {
@@ -45,9 +74,40 @@ class ProductProvider extends Component {
         });
     };
     getItem = id => {
-        const product = this.state.products.find(item => item.id === id);
+        const product = this.state.products.find(item => item.id === parseInt(id,10));
         return product;
     };
+
+    setModels = () => {
+        let modelList = [];
+        models.forEach(item => {
+            const singleItem = {...item};
+            modelList = [...models, singleItem];
+        });
+        this.setState(() => {
+            return { modelList };
+        });
+    };
+
+    getModels = () => {
+        let models = this.state.modelsByBrand.models;
+        //this.setModelsList(models);
+            return models;
+    };
+/*
+    setModelsList(models) {
+    this.setState(() => {
+        return {allmodels: models}
+    })
+    }*/
+    getModelsByBrand = id => {
+        const modelsByBrand = this.state.modelList.find(item => item.id === parseInt(id,10));
+        const models = modelsByBrand.models;
+        this.setState(() => {
+            return { modelsByBrand: modelsByBrand, models: models}
+        });
+    };
+    
     handleDetail = id => {
         const product = this.getItem(id);
         this.setState(() => {
@@ -83,6 +143,12 @@ class ProductProvider extends Component {
             return { modalProduct: product, exchangeModalOpen: true };
         });
     }
+    openExchangeSummaryModal = id => {
+     //   const product = this.getItem(id);
+        this.setState(() => {
+            return { exchangeSummaryModalOpen: true };
+        });
+    }
     closeModal = () => {
         this.setState(() => {
             return { modalOpen: false };
@@ -91,6 +157,11 @@ class ProductProvider extends Component {
     exchangeCloseModal = () => {
         this.setState(() => {
             return { exchangeModalOpen: false };
+        });
+    };
+    closeExchangeSummaryModal = () => {
+        this.setState(() => {
+            return { exchangeSummaryModalOpen: false };
         });
     };
     increment = id => {
@@ -199,18 +270,28 @@ class ProductProvider extends Component {
                     addToCart: this.addToCart,
                     openModal: this.openModal,
                     exchangeOpenModal: this.exchangeOpenModal,
+                    openExchangeSummaryModal: this.openExchangeSummaryModal,
                     closeModal: this.closeModal,
+                    closeExchangeSummaryModal: this.closeExchangeSummaryModal,
                     exchangeCloseModal: this.exchangeCloseModal,
                     increment: this.increment,
                     decrement: this.decrement,
                     removeItem: this.removeItem,
-                    clearCart: this.clearCart
+                    clearCart: this.clearCart,
+                    getModels: this.getModels,
+                    getModelsByBrand: this.getModelsByBrand,
+                    setSelectedExchangeModel: this.setSelectedExchangeModel,
+                    setExchange: this.setExchange,
+                    setSelectedExchangeBrand: this.setSelectedExchangeBrand
+                    
                 }}
             >
                 {this.props.children}
             </ProductContext.Provider>
         );
     }
+
+  
 }
 
 const ProductConsumer = ProductContext.Consumer;

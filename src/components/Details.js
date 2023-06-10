@@ -58,7 +58,7 @@ export default class Details extends Component {
                                                          onClick={() => {
                                                              value.exchangeOpenModal(id);
                                                          }}>
-                                            exchange
+                                            With exchange
                                         </ButtonContainer>
                                     </div>
                                 </div>

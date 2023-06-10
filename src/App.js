@@ -9,6 +9,7 @@ import Cart from "./components/Cart";
 import Default from "./components/Default";
 import Modal from './components/Modal';
 import ExchangeModal from "./components/ExchangeModal";
+import ExchangeSummaryModal from "./components/ExchangeSummaryModal";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
             </Switch>
             <Modal />
             <ExchangeModal />
+            <ExchangeSummaryModal />
         </React.Fragment>
     );
 }
